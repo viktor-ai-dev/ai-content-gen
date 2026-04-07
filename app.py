@@ -83,6 +83,31 @@ def create_vectorstore(text):
     embeddings = OpenAIEmbeddings()
     return Chroma.from_documents(chunks, embeddings)
 
+def parse_brand_data(text:str):
+    sections = {
+        "Brand Name": "",
+        "Brand Voice": "",
+        "Target Audience": "",
+        "Products": []
+    }
+
+    current_section = None
+
+    for line in text.split(sep="\n"):   # Hämta en line fram till \n
+        line = line.strip()             # Ta bort white spaces
+
+        if "Brand name:" in line:
+            sections["Brand Name"] = line.replace("Brand Name:","").strip()
+        elif "Brand Voice:" in line:
+            current_section = "Brand Voice"
+        elif "Target Audience:" in line:
+            current_section = "Target Audience"
+        elif "Product:" in line:
+            sections["Products"].append(line.replace("Product:","").strip())
+        elif current_section:
+            sections[current_section] += line + " "
+
+    return sections
 
 # ----------------------------
 # BRAND SYSTEM
@@ -107,12 +132,10 @@ if selected_brand != st.session_state["current_brand"]:
     st.session_state["current_brand"] = selected_brand
     st.success(f"Loaded brand: {selected_brand}")
 
-
 # ----------------------------
 # TABS
 # ----------------------------
 tab1, tab2 = st.tabs(["📝 Product Description", "📢 Ad Copy"])
-
 
 # ----------------------------
 # TAB 1 (FIXED)
@@ -214,3 +237,25 @@ with tab2:
         for v in variants:
             st.write(v)
             st.markdown("---")
+
+# ----------------------------
+# Preview
+# ----------------------------
+
+st.markdown("🏷 Brand Preview 🏷")
+
+brand_text = load_brand_data(brand_name=selected_brand)
+brand_data = parse_brand_data(brand_text)
+
+col1,col2 = st.columns(2)
+
+with col1:
+    st.markdown("### 🧠 Brand Voice")
+    st.write(brand_data["Brand Voice"])
+with col2:
+    st.markdown("### 🎯 Target Audience")
+    st.write(brand_data["Target Audience"])
+
+st.markdown("### 🛍 Products")
+for p in brand_data["Products"]:
+    st.write(f"- {p}")

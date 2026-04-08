@@ -4,11 +4,11 @@ import os
 
 # Utils
 from utils.functions import load_brand_data
-from utils.functions import load_dotenv
 from utils.functions import create_vectorstore
-from utils.functions import generate_text
 from utils.functions import get_context
 from utils.functions import parse_brand_data
+from utils.functions import generate_variants
+from utils.functions import pick_best
 
 # ----------------------------
 # LOAD ENV + Data folder

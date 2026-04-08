@@ -1,4 +1,3 @@
-
 # LangChain (stable imports)
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -7,6 +6,7 @@ from langchain_openai import OpenAIEmbeddings
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+import streamlit as st
 
 # ----------------------------
 # LOAD ENV + Data folder + Client

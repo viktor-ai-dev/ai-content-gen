@@ -3,7 +3,12 @@ from dotenv import load_dotenv
 import os
 
 # Utils
-from Utils.functions import *
+from utils.functions import load_brand_data
+from utils.functions import load_dotenv
+from utils.functions import create_vectorstore
+from utils.functions import generate_text
+from utils.functions import get_context
+from utils.functions import parse_brand_data
 
 # ----------------------------
 # LOAD ENV + Data folder
